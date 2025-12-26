@@ -1,0 +1,2591 @@
+https://blog.csdn.net/qq_44810930/article/details/156136592
+
+快速入门
+Skills 是什么？
+Skills 是 Claude Code 的知识模块系统，让你可以为 Claude 添加专业知识和技能。就像给 Claude 配备一本本专业的"工作手册"。
+
+核心特点：
+
+📚 知识模块化 - 按领域组织专业知识
+🎯 智能触发 - 自动识别何时需要加载
+🧠 渐进加载 - 只加载需要的部分，不占用上下文
+🔧 资源配套 - 代码、脚本、文档一体化
+典型场景：
+
+团队编码规范
+项目架构指南
+API 使用手册
+部署流程
+代码审查标准
+什么是 Skills
+为什么需要 Skills
+没有 Skills 时：
+
+每个对话都要重复提供背景信息
+Claude 无法持续学习你的习惯和要求
+项目规范难以统一执行
+上下文窗口很快被占满
+有了 Skills 后：
+
+一次编写，重复使用
+Claude 自动提供专业指导
+团队规范统一执行
+智能加载，高效省资源
+Skills 的优势
+特性	说明	实际价值
+智能触发	自动识别相关查询	无需手动调用，自然集成
+渐进披露	三层资源加载策略	节省上下文窗口，提升性能
+资源分层	核心 + 参考资料 + 示例	结构清晰，易于维护
+即插即用	放入插件即可使用	分发简单，团队共享方便
+可执行脚本	包含实用工具脚本	代码复用，避免重复编写
+创建你的第一个 Skill
+目标：创建一个 Code Review 规范 Skill
+让 Claude 在审查代码时自动遵循团队的规范。
+
+步骤 1：规划你的 Skill
+思考三个问题：
+
+用途是什么？ 为 Claude 提供代码审查标准和流程
+何时触发？ 用户说 “review this code”、“check code quality” 时
+包含什么内容？ 编码规范、审查清单、最佳实践
+步骤 2：创建目录结构
+# 在插件目录下创建（或在 .claude 目录下创建全局 skill）
+mkdir -p my-plugin/skills/code-review-guide/{references,examples}
+
+# 创建 SKILL.md 文件
+touch my-plugin/skills/code-review-guide/SKILL.md
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+步骤 3：编写 SKILL.md
+---
+name: Code Review Guide
+description: This skill should be used when the user asks to "review code", "check code quality", "review this function", "analyze code", or requests code review feedback. Provides comprehensive code review standards, security checks, and best practices.
+version: 1.0.0
+---
+
+# Code Review Guide
+
+This skill provides standardized code review guidance focusing on security, performance, and maintainability.
+
+## Core Review Principles
+
+When reviewing code, evaluate these aspects:
+
+### 1. Security
+- Check for injection vulnerabilities (SQL, command, XSS)
+- Verify input validation and sanitization
+- Ensure sensitive data is handled properly
+- Review authentication and authorization logic
+
+### 2. Performance
+- Identify unnecessary computations
+- Check for N+1 query problems
+- Review algorithm complexity
+- Verify proper resource cleanup
+
+### 3. Maintainability
+- Evaluate code clarity and readability
+- Check for appropriate abstraction
+- Verify error handling completeness
+- Review test coverage
+
+## Common Issues to Identify
+
+### Critical Issues (Must Fix)
+- Security vulnerabilities
+- Performance bottlenecks
+- Resource leaks
+- Logical errors
+
+### Improvements (Should Fix)
+- Code duplication
+- Unclear naming
+- Missing error handling
+- Insufficient logging
+
+## Review Process
+
+1. **Understand Intent**
+   - Read code and comments
+   - Identify purpose and requirements
+   - Check for edge cases
+
+2. **Identify Issues**
+   - Use static analysis patterns
+   - Look for anti-patterns
+   - Consider test scenarios
+
+3. **Provide Feedback**
+   - Explain why it's an issue
+   - Suggest specific improvements
+   - Provide code examples when helpful
+
+4. **Prioritize Findings**
+   - Mark critical vs optional
+   - Group related issues
+   - Balance detail with brevity
+
+## Additional Resources
+
+### Reference Files
+
+- **`references/security-checklist.md`** - Detailed security review checklist
+- **`references/performance-patterns.md`** - Performance optimization patterns
+
+### Example Reviews
+
+- **`examples/sample-review.md`** - Example of a thorough code review
+
+### Utility Scripts
+
+- **`scripts/security-scan.sh`** - Automated security scan helper
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+步骤 4：添加配套资源
+创建参考资料：
+
+# references/security-checklist.md
+cat > my-plugin/skills/code-review-guide/references/security-checklist.md << 'EOF'
+# Security Checklist
+
+## Input Validation
+- [ ] All external inputs are validated
+- [ ] Input lengths/sizes are checked
+- [ ] Special characters are handled properly
+- [ ] Type checking is performed
+
+## Authentication & Authorization
+- [ ] Auth tokens are validated
+- [ ] Permissions are checked
+- [ ] Role-based access is correct
+- [ ] Session management is secure
+
+## Data Protection
+- [ ] Sensitive data is encrypted
+- [ ] PII is handled according to policy
+- [ ] Secrets are not hardcoded
+- [ ] Passwords are hashed properly
+
+## Common Vulnerabilities
+- [ ] No SQL injection vectors
+- [ ] No command injection
+- [ ] No XSS vulnerabilities
+- [ ] No path traversal issues
+EOF
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+创建示例：
+
+# examples/sample-review.md
+cat > my-plugin/skills/code-review-guide/examples/sample-review.md << 'EOF'
+# Sample Code Review
+
+## Issue: SQL Injection Vulnerability
+**Location**: `user.js:45`
+**Severity**: 🔴 Critical
+
+**Current Code**:
+```javascript
+const query = "SELECT * FROM users WHERE id = " + req.params.id;
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+Problem: Direct concatenation of user input into SQL query.
+
+Recommendation:
+
+const query = "SELECT * FROM users WHERE id = ?";
+db.query(query, [req.params.id], callback);
+一键获取完整项目代码
+javascript
+1
+2
+Explanation: Always use parameterized queries to prevent SQL injection.
+Status: Must Fix
+
+Issue: Inefficient Loop
+Location: dataProcessor.js:120
+Severity: 🟡 Improvement
+
+Current Code:
+
+for (let user of users) {
+  for (let order of orders) {
+    if (order.userId === user.id) {
+      user.orders.push(order);
+    }
+  }
+}
+一键获取完整项目代码
+javascript
+1
+2
+3
+4
+5
+6
+7
+Problem: O(n*m) complexity with nested loops.
+
+Recommendation:
+
+const ordersByUserId = groupBy(orders, 'userId');
+for (let user of users) {
+  user.orders = ordersByUserId[user.id] || [];
+}
+一键获取完整项目代码
+javascript
+1
+2
+3
+4
+Explanation: Create a lookup table for O(n+m) complexity.
+Status: Should Fix
+
+Issue: Unclear Naming
+Location: utils.js:78
+Severity: 🟢 Suggestion
+
+Current Code:
+
+function process(d) {
+  return d.map(x => x * 2);
+}
+一键获取完整项目代码
+javascript
+1
+2
+3
+Problem: Function and parameter names are not descriptive.
+
+Recommendation:
+
+function doubleValues(array) {
+  return array.map(value => value * 2);
+}
+一键获取完整项目代码
+javascript
+1
+2
+3
+Explanation: Clear naming improves maintainability.
+Status: Consider
+EOF
+
+#### 步骤 5：测试你的 Skill
+
+1. **编写测试用例**
+
+```bash
+# 启动 claude，尝试以下提示：
+# "Please review this code for security issues"
+# "Check the quality of this function"
+# "Analyze this code and provide feedback"
+一键获取完整项目代码
+1
+2
+3
+4
+5
+6
+7
+8
+9
+验证触发
+确认 Skill 在用户询问相关内容时自动加载
+检查输出是否遵循了 SKILL.md 中的规范
+验证参考资料是否按需加载
+调整优化
+如果触发不准确，调整 description 中的关键词
+如果内容过于冗长，考虑将部分移到 references/
+如果示例不够完整，补充具体案例
+Skill 结构详解
+1. YAML Frontmatter（元数据）
+---
+name: Skill Name                    # 技能名称（必需）
+description: This skill should...    # 触发描述（必需）
+version: 1.0.0                      # 版本号（可选）
+license: MIT                        # 许可证（可选）
+---
+一键获取完整项目代码
+yaml
+1
+2
+3
+4
+5
+6
+description 最佳实践：
+
+✅ 好的示例：
+
+description: This skill should be used when the user asks to "create a hook",
+             "add a PreToolUse hook", "validate tool use", "implement prompt-based hooks",
+             or mentions hook events (PreToolUse, PostToolUse, Stop).
+一键获取完整项目代码
+yaml
+1
+2
+3
+❌ 不好的示例：
+
+description: Use this skill when working with hooks.  # 太笼统
+description: Load when user needs help with code.    # 不具体
+description: I will help you with code review.      # 第一人称错误
+一键获取完整项目代码
+yaml
+1
+2
+3
+2. 正文内容
+写作风格要求：
+
+使用命令式/不定式（“Do X”），不用第二人称（“You should”）
+清晰的标题层次
+具体的操作步骤
+明确的资源引用
+正确示例：
+
+# Create a Hook
+
+## Define Event Type
+
+Determine which hook event to use:
+
+1. For tool validation, use `PreToolUse`
+2. For post-action logging, use `PostToolUse`
+3. For completion checks, use `Stop`
+
+## Write Hook Implementation
+
+Create a script in the `hooks/` directory:
+
+```bash
+touch hooks/my-hook.py
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+Refer to examples/sample-hook.py for the complete implementation.
+
+**错误示例：**
+```markdown
+# Creating Hooks
+
+## You Should Choose an Event
+
+You need to decide which event you want to use. You can use PreToolUse for validation.
+
+## Write Your Implementation
+
+You should create a file. You might want to look at the examples.
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3. 标准目录结构
+skill-name/
+├── SKILL.md                     # 核心说明文件（必需）
+├── references/                   # 参考文档（可选）
+│   ├── patterns.md              # 详细模式
+│   ├── advanced.md              # 高级用法
+│   └── api-docs.md              # API 文档
+├── examples/                     # 示例文件（可选）
+│   ├── example1.js              # 示例代码
+│   ├── config.json              # 配置文件示例
+│   └── workflow.md              # 流程示例
+└── scripts/                      # 脚本工具（可选）
+    ├── validate.sh              # 验证脚本
+    └── analyze.py               # 分析工具
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+触发机制
+触发原理
+Skill 的触发基于 description 中的关键词匹配：
+
+Claude 分析用户提示
+扫描所有 Skill 的 description
+匹配关键词触发 Skill
+加载 SKILL.md 内容
+后续对话基于 Skill 指导
+如何写好触发描述
+原则：
+
+具体，不笼统
+包含多种表达方式
+覆盖常见场景
+避免歧义
+实战技巧：
+
+动词多样性
+description: ..."create", "build", "generate", "make", "develop"...
+一键获取完整项目代码
+yaml
+1
+名词同义词
+description: ..."hook", "plugin", "extension", "middleware"...
+一键获取完整项目代码
+yaml
+1
+完整短语
+description: This skill should be used when the user asks to
+             "create a React component",
+             "build a UI component with React",
+             "make a React widget"...
+一键获取完整项目代码
+yaml
+1
+2
+3
+4
+反例排除
+# 如果某些词会导致误判，可以明确说出场景
+description: ...when working with Git hooks (not webhooks)...
+一键获取完整项目代码
+yaml
+1
+2
+触发测试清单
+创建 Skill 后，验证这些触发场景：
+
+ 直接请求：“Please use [skill name] to…”
+ 间接提及：涉及 Skill 相关话题
+ 模糊表达：用不同方式说同一件事
+ 边界情况：不会误判的不相关请求
+如果不触发：
+
+在 description 中添加更多触发词
+使用更具体的短语
+创建多个相似的 Skill 覆盖不同场景
+如果误判触发：
+
+缩小 description 的范围
+使用更精确的专业术语
+添加限定词
+配套资源管理
+references/ 目录
+用途：详细参考文档，Claude 需要时才加载
+
+何时使用：
+
+详细的 API 文档
+数据库结构
+公司政策规定
+架构决策记录
+深度技术细节
+优秀实践：
+
+# SKILL.md
+
+...核心内容...
+
+## Additional Resources
+
+### Reference Files
+- **`references/api-spec.md`** - Complete API specification
+- **`references/db-schema.md`** - Database schemas and relationships
+- **`references/security-policy.md`** - Data handling policies
+
+# references/api-spec.md
+# (Can be 3,000+ words, loaded only when needed)
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+examples/ 目录
+用途：可直接复制或参考的工作示例
+
+何时使用：
+
+配置模板
+完整代码示例
+流程文档
+用户故事模板
+项目结构示例
+优秀实践：
+
+# SKILL.md
+
+...核心说明...
+
+## Quick Start
+
+See `examples/basic-setup/` for a working project template.
+
+# examples/basic-setup/
+├── package.json
+├── src/
+│   └── index.js
+└── README.md
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+scripts/ 目录
+用途：可执行的实用工具脚本
+
+何时使用：
+
+自动化检查工具
+数据转换脚本
+验证工具
+代码生成器
+批量处理脚本
+优秀实践：
+
+#!/usr/bin/env python3
+"""
+Project validation script
+
+Usage: python3 scripts/validate-project.py
+"""
+
+import os
+import sys
+
+def validate_project():
+    """Validate project structure."""
+    required_files = ['package.json', 'src/index.js', 'README.md']
+
+    missing = []
+    for file in required_files:
+        if not os.path.exists(file):
+            missing.append(file)
+
+    if missing:
+        print(f"❌ Missing files: {', '.join(missing)}")
+        return 1
+
+    print("✅ All required files present")
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(validate_project())
+一键获取完整项目代码
+python
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+然后在 SKILL.md 中引用：
+
+Validate project structure using `scripts/validate-project.py`.
+一键获取完整项目代码
+markdown
+1
+资源规模建议
+资源类型	建议大小	MAX_SIZE	存放位置
+SKILL.md 主体	1,500-2,000 词	3,000 词	必需
+单个 reference	2,000-5,000 词	无限制	references/
+单个 example	完整文件	完整文件	examples/
+脚本	100-500 行	完整功能	scripts/
+最佳实践
+1. Skill 命名规范
+✅ 好：
+
+name: frontend-design
+name: security-audit
+name: database-migration
+一键获取完整项目代码
+yaml
+1
+2
+3
+❌ 不好：
+
+name: My Skill
+name: helper
+name: utility
+一键获取完整项目代码
+yaml
+1
+2
+3
+原则：
+
+小写字母 + 连字符
+描述性功能
+避免通用词汇
+能和描述配合使用
+2. Skill 粒度控制
+一个 Skill = 一个专业领域
+
+✅ 正确：
+
+skills/
+├── frontend-design/           # 前端设计规范
+├── security-audit/            # 安全审计
+└── api-testing/               # API 测试
+一键获取完整项目代码
+1
+2
+3
+4
+❌ 错误：
+
+skills/
+└── everything-about-dev/      # 太大，什么都放
+一键获取完整项目代码
+1
+2
+如何判断粒度：
+
+ Skill 有明确的触发场景
+ Skill 的内容聚焦一个主题
+ SKILL.md 可以轻松控制在 2,000 词内
+ 配套资源自然归类
+3. 渐进式披露原则
+# SKILL.md (始终加载)
+
+## 核心内容 (大约 1,500 词)
+1. 功能概述
+2. 基础使用步骤
+3. 常见问题
+
+## 参考资料
+- `references/advanced-patterns.md` - 高级模式详情 (需要时加载)
+- `references/api-spec.md` - API 完整规范 (需要时加载)
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+好处：
+
+首次加载快
+内存占用少
+针对性强
+4. 版本管理
+---
+name: my-skill
+version: 1.2.3  # 遵循语义化版本
+---
+
+# 版本号规则：
+# MAJOR.MINOR.PATCH
+# - MAJOR: 重大功能变更
+# - MINOR: 新增功能
+# - PATCH: Bug 修复
+一键获取完整项目代码
+yaml
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+更新日志：
+
+# CHANGELOG.md
+
+## 1.2.3 (2025-01-15)
+- 修复触发关键词重叠问题
+- 更新示例代码
+
+## 1.2.0 (2025-01-10)
+- 新增 TypeScript 支持章节
+- 添加 3 个新示例
+一键获取完整项目代码
+markdown
+1
+2
+3
+4
+5
+6
+7
+8
+9
+5. 团队协作
+Skill 评审清单：
+
+## Skill 提交检查清单
+
+- [ ] description 包含具体触发词
+- [ ] SKILL.md 字数适中 (1k-2k)
+- [ ] 配套资源正确引用
+- [ ] examples 能直接运行
+- [ ] scripts 有使用说明
+- [ ] 更新版本号
+- [ ] 添加更新记录
+- [ ] 同事测试通过
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Skill 文档：
+
+# README.md at skill level
+
+# Code Review Guide Skill
+
+## What it does
+Provides standardized code review guidance...
+
+## Usage
+Will automatically trigger when you say: "review this code"...
+
+## Structure
+- SKILL.md - Main guidelines
+- references/security-checklist.md - Security checklist
+- examples/sample-review.md - Example review
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+实用场景与示例
+场景 1：团队编码规范
+需求：确保团队代码风格统一
+
+Skill 设计：
+
+# skills/coding-standards/SKILL.md
+---
+name: coding-standards
+description: This skill should be used when the user asks to "check code style",
+             "review code quality", "apply coding standards", "format code",
+             or "improve code quality".
+---
+
+# Team Coding Standards
+
+## Code Style
+
+### Naming
+- Variables: camelCase (`userName`)
+- Constants: UPPER_SNAKE_CASE (`MAX_RETRY`)
+- Functions: camelCase (`fetchData()`)
+- Classes: PascalCase (`UserService`)
+
+### Formatting
+- Indent: 2 spaces
+- Line length: 80 characters
+- Semicolons: required
+- Quotes: single quotes for strings
+
+## Best Practices
+
+See `references/best-practices.md` for detailed guidelines.
+
+### JavaScript
+- Use `const` by default
+- Use `let` when rebinding needed
+- Avoid `var`
+- Use arrow functions for short functions
+
+### Testing
+- Each feature must include tests
+- Test descriptions should be clear
+- Mock external dependencies
+一键获取完整项目代码
+yaml
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+配套资源：
+
+references/best-practices.md - 详细最佳实践
+references/javascript.md - JS 特定指导
+examples/formatted-example.js - 正确格式示例
+examples/clean-function.js - 函数编写示例
+场景 2：前端组件库使用
+需求：统一团队 UI 组件使用方式
+
+Skill 设计：
+
+# skills/ui-component-library/SKILL.md
+---
+name: ui-component-library
+description: This skill should be used when the user asks to "create a UI component",
+             "build a form", "add a button", "use design system components",
+             or works with React components and UI elements.
+---
+
+# UI Component Library Guide
+
+When building UI components, use our Design System:
+
+## Available Components
+
+### Button
+Use `import { Button } from '@company/design-system'`
+
+Variations:
+- `primary` - Main actions
+- `secondary` - Secondary actions
+- `danger` - Destructive actions
+
+See `references/component-api.md` for full props.
+
+### Form
+Use `import { Form, FormField } from '@company/design-system'`
+
+Layout example in `examples/form-layout.js`.
+
+## Implementation Process
+
+1. Check existing components in `references/component-catalog.md`
+2. Use predefined variants and sizes
+3. Follow accessibility guidelines in `references/a11y.md`
+4. Test interactions
+5. Review with design team
+
+## Creating New Components
+
+If existing components don't meet needs:
+
+1. Check component request process in `references/new-component.md`
+2. Follow component template: `examples/component-template.js`
+3. Include Storybook stories
+4. Add tests
+5. Submit for review
+一键获取完整项目代码
+yaml
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+场景 3：API 开发规范
+需求：统一 REST API 开发标准
+
+Skill 设计：
+
+# skills/api-development/SKILL.md
+---
+name: api-development
+description: This skill should be used when the user asks to "create an API",
+             "design endpoint", "build REST API", "add API route",
+             or works with backend API development and HTTP endpoints.
+---
+
+# API Development Standards
+
+## Endpoint Design
+
+### URL Structure
+Use kebab-case for URLs:
+一键获取完整项目代码
+yaml
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+✅ GET /api/users/:userId/orders
+❌ GET /api/users/:userId/orders/:orderId # Too deep
+
+Max URL depth: 3 levels (`/users/:id/orders/:id`)
+
+### HTTP Methods
+- GET - Retrieve
+- POST - Create
+- PUT - Replace
+- PATCH - Update
+- DELETE - Remove
+
+See `references/http-methods.md` for detailed usage.
+
+### Status Codes
+- 200 OK - Successful GET/PUT/PATCH
+- 201 Created - Successful POST
+- 204 No Content - Successful DELETE
+- 400 Bad Request - Invalid input
+- 401 Unauthorized - Missing auth
+- 403 Forbidden - Insufficient permissions
+- 404 Not Found - Resource doesn't exist
+- 409 Conflict - Duplicate/resource in use
+- 500 Server Error - Unexpected error
+
+## Request/Response Format
+
+### Request
+```json
+POST /api/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+Response
+{
+  "data": {
+    "id": "123",
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "meta": {
+    "version": "v1",
+    "timestamp": "2025-01-15T10:30:00Z"
+  }
+}
+一键获取完整项目代码
+json
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+See examples/ for request/response examples.
+
+Pagination
+Use cursor-based pagination:
+
+GET /api/users?cursor=eyJpZCI6IjEyMyJ9&limit=20
+一键获取完整项目代码
+http
+1
+Response:
+
+{
+  "data": [...],
+  "pagination": {
+    "cursor": "eyJpZCI6IjE0MyJ9",
+    "hasMore": true
+  }
+}
+一键获取完整项目代码
+json
+1
+2
+3
+4
+5
+6
+7
+Authentication
+Use Bearer token:
+
+Authorization: Bearer <token>
+一键获取完整项目代码
+http
+1
+See references/auth-guide.md for full implementation.
+
+Error Handling
+Standard error response:
+
+{
+  "error": {
+    "code": "INVALID_EMAIL",
+    "message": "Email format is invalid",
+    "details": {
+      "field": "email",
+      "value": "invalid-email"
+    }
+  }
+}
+一键获取完整项目代码
+json
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+Error codes in references/error-codes.md.
+
+Testing APIs
+Use the test script:
+
+./scripts/test-endpoint.sh GET /api/users
+./scripts/test-endpoint.sh POST /api/users ./examples/user-request.json
+一键获取完整项目代码
+bash
+1
+2
+**配套资源：**
+- `references/http-methods.md` - HTTP 方法详细说明
+- `references/auth-guide.md` - 认证实现指南
+- `references/error-codes.md` - 错误码清单
+- `examples/user-crud/` - 用户 API 完整示例
+- `scripts/test-endpoint.sh` - API 测试脚本
+
+### 场景 4：数据库查询优化
+
+**需求**：指导 Claude 进行 SQL 查询优化
+
+**Skill 设计：**
+```yaml
+# skills/sql-optimization/SKILL.md
+---
+name: sql-optimization
+description: This skill should be used when the user asks to "optimize a query",
+             "improve SQL performance", "fix slow query", "analyze query execution",
+             or "add database indexes".
+---
+
+# SQL Query Optimization Guide
+
+## Analysis Process
+
+### 1. Get Query Information
+Read the query file and understand:
+- What data is needed
+- Table relationships
+- Current performance issues
+
+### 2. Check Execution Plan
+Use database tools to get execution plan:
+
+```sql
+-- PostgreSQL
+EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
+-- MySQL
+EXPLAIN FORMAT=JSON SELECT * FROM users WHERE email = 'test@example.com';
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+3. Identify Problems
+Common issues:
+
+Missing indexes (Seq Scan instead of Index Scan)
+N+1 queries (repeated queries in loop)
+Full table scans
+Unnecessary columns (SELECT *)
+Inefficient joins
+See references/common-issues.md for detailed examples.
+
+Optimization Techniques
+Add Indexes
+-- Check if index exists
+SELECT * FROM pg_indexes WHERE tablename = 'users';
+
+-- Create index
+CREATE INDEX CONCURRENTLY idx_users_email ON users(email);
+
+-- Composite index
+CREATE INDEX CONCURRENTLY idx_orders_user_status
+ON orders(user_id, status) WHERE status = 'active';
+一键获取完整项目代码
+sql
+1
+2
+3
+4
+5
+6
+7
+8
+9
+Optimize Queries
+Before:
+
+-- N+1 problem
+SELECT * FROM users;
+-- Then for each user:
+SELECT * FROM orders WHERE user_id = ?;
+一键获取完整项目代码
+sql
+1
+2
+3
+4
+After:
+
+-- Single query with JOIN
+SELECT u.*, json_agg(o.*) AS orders
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+GROUP BY u.id;
+一键获取完整项目代码
+sql
+1
+2
+3
+4
+5
+Use Connection Pooling
+See examples/connection-pooling.js for implementation.
+
+Verification
+After optimization:
+
+Re-run EXPLAIN to verify improvement
+Check query response time
+Monitor database load
+Ensure indexes are used
+Use the analysis script:
+
+./scripts/analyze-query.sh query.sql
+一键获取完整项目代码
+bash
+1
+**配套资源：**
+- `references/execution-plans.md` - 执行计划详解
+- `references/common-issues.md` - 常见问题和解决方案
+- `examples/before-after/` - 优化前后对比示例
+- `scripts/analyze-query.sh` - 查询分析脚本
+- `scripts/suggest-indexes.py` - 索引建议工具
+
+### 场景 5：代码重构指导
+
+**需求**：指导 Claude 如何安全地重构代码
+
+**Skill 设计：**
+```yaml
+# skills/refactoring-guide/SKILL.md
+---
+name: refactoring-guide
+description: This skill should be used when the user asks to "refactor code",
+             "restructure", "improve code structure", "extract function",
+             or "clean up code".
+---
+
+# Code Refactoring Guide
+
+## Refactoring Process
+
+### 1. Understand Current Code
+Before refactoring:
+- Read and understand functionality
+- Identify dependencies
+- Check test coverage
+- Document any unclear parts
+
+### 2. Ensure Test Coverage
+
+**Critical: Tests must pass before, during, and after refactoring.**
+
+Add tests if missing:
+```javascript
+describe('functionToRefactor', () => {
+  it('should handle normal case', () => {
+    expect(functionToRefactor(input)).toEqual(expected);
+  });
+
+  it('should handle edge case', () => {
+    expect(functionToRefactor(edgeCase)).toEqual(expected);
+  });
+});
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+3. Refactoring Techniques
+Extract Function
+Before:
+
+function processUserData(users) {
+  users.forEach(user => {
+    // Validation
+    if (!user.email.includes('@')) {
+      throw new Error('Invalid email');
+    }
+
+    // Normalization
+    user.email = user.email.toLowerCase().trim();
+
+    // Processing
+    user.name = `${user.firstName} ${user.lastName}`;
+  });
+}
+一键获取完整项目代码
+javascript
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+After:
+
+function processUserData(users) {
+  users.forEach(user => {
+    validateUser(user);
+    normalizeUser(user);
+    formatUserName(user);
+  });
+}
+
+function validateUser(user) {
+  if (!user.email.includes('@')) {
+    throw new Error('Invalid email');
+  }
+}
+
+function normalizeUser(user) {
+  user.email = user.email.toLowerCase().trim();
+}
+
+function formatUserName(user) {
+  user.name = `${user.firstName} ${user.lastName}`;
+}
+一键获取完整项目代码
+javascript
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+Extract Class
+See examples/extract-class/ for complete example.
+
+Rename Variables
+Before:
+
+const x = getUser();
+const y = x.id;
+一键获取完整项目代码
+javascript
+1
+2
+After:
+
+const currentUser = getUser();
+const userId = currentUser.id;
+一键获取完整项目代码
+javascript
+1
+2
+4. Refactoring Steps
+Step-by-step approach:
+
+Run all tests -> All pass ✅
+Make small change (extract one function)
+Run all tests -> All pass ✅
+Commit change
+Repeat for next refactoring
+DO NOT:
+
+Refactor everything at once
+Skip running tests
+Change behavior during refactoring
+Refactor without understanding code
+5. Common Refactoring Patterns
+See references/refactoring-patterns.md for:
+
+Replace Conditional with Polymorphism
+Introduce Parameter Object
+Replace Nested Conditionals with Guard Clauses
+Extract Interface
+Move Function
+6. When to Refactor
+Good times to refactor:
+
+Before adding new feature
+After fixing bug
+During code review
+When code is hard to understand
+When tests are hard to write
+Bad times to refactor:
+
+Before deadline
+When requirements are unclear
+Without tests in place
+When changing multiple systems
+Refactoring Checklist
+ Tests exist and pass
+ Understand current implementation
+ Make small incremental changes
+ Run tests after each change
+ Commit frequently
+ Don’t change behavior
+ Update documentation
+ Get code review
+Use Automation
+Run the refactoring helper:
+
+# Identify refactoring opportunities
+./scripts/find-duplication.js src/
+
+# Check complexity
+./scripts/analyze-complexity.js
+
+# Suggest extractable functions
+./scripts/suggest-extractions.js file.js
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+7
+8
+**配套资源：**
+- `references/refactoring-patterns.md` - 重构模式详解
+- `references/anti-patterns.md` - 常见坏味道识别
+- `examples/extract-class/` - Extract Class 完整示例
+- `scripts/find-duplication.js` - 重复代码检测
+- `scripts/suggest-extractions.js` - 提取函数建议
+
+---
+
+## 故障排查
+
+### 问题 1：Skill 不触发
+
+**症状**：说了相关的话，但 Skill 没有加载
+
+**排查步骤：**
+
+1. **检查 description**
+```yaml
+# ❌ 可能问题：太泛泛
+description: This skill is about hooks.   # 太模糊
+
+# ✅ 修正：具体场景
+description: This skill should be used when the user asks to
+             "create a hook", "add a PreToolUse hook", "validate tool use",
+             "test hooks", or mentions hook events.
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+检查文件位置
+# 确认目录结构
+ls -la plugin-name/skills/skill-name/SKILL.md
+一键获取完整项目代码
+bash
+1
+2
+测试触发
+# 问几个应该触发的问题
+echo "How do I create a hook?"
+echo "What's the PreToolUse event?"
+echo "Help me validate tool use"
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+查看 Claude Code 日志
+# 看是否有加载 skill 的记录
+# 通常输出中会显示 "Loading skill: skill-name"
+一键获取完整项目代码
+bash
+1
+2
+问题 2：Skill 触发误判
+症状：不相关的请求也触发了 Skill
+
+解决方案：
+
+缩小描述范围
+# 之前（太宽泛）
+description: This skill should be used when the user mentions code.
+
+# 之后（具体）
+description: This skill should be used when the user asks to
+             "refactor code", "extract function", "clean up code",
+             or "restructure code".
+一键获取完整项目代码
+yaml
+1
+2
+3
+4
+5
+6
+7
+添加限定词
+description: This skill should be used when working with Git hooks
+             (not webhooks or event hooks)...
+一键获取完整项目代码
+yaml
+1
+2
+问题 3：上下文溢出
+症状：Skill 加载后上下文窗口不够用
+
+解决方案：
+
+检查 SKILL.md 大小
+# Unix
+wc -w skills/skill-name/SKILL.md
+
+# 如果 > 3000 词，需要精简
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+资源外移
+# ❌ 原内容
+## Advanced Patterns
+[3,000 words of patterns...]
+
+## Edge Cases
+[2,000 words of edge cases...]
+
+# ✅ 修订
+## Advanced Patterns
+See `references/advanced-patterns.md` for detailed patterns.
+
+## Edge Cases
+See `references/edge-cases.md` for edge case handling.
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+按使用场景拆分 Skill
+skills/
+├── api-development-basic/      # 基础 API
+├── api-development-advanced/   # 高级 API
+└── api-performance/            # API 性能优化
+一键获取完整项目代码
+1
+2
+3
+4
+问题 4：资源找不到
+症状：Claude 说找不到 references/examples/scripts 中的文件
+
+检查清单：
+
+ 文件实际存在
+ls -la skills/skill-name/references/file.md
+一键获取完整项目代码
+bash
+1
+ 路径正确
+# ❌ 错误
+See `reference/api.md`  # 忘记 's'
+
+# ✅ 正确
+See `references/api.md`
+一键获取完整项目代码
+markdown
+1
+2
+3
+4
+5
+ 大小写一致
+# Unix 系统大小写敏感
+ls skills/skill-name/References/  # 错误（应小写）
+ls skills/skill-name/references/  # 正确
+一键获取完整项目代码
+bash
+1
+2
+3
+ 相对路径正确
+# SKILL.md 中引用其他文件
+See `references/api.md`  # ✅（相对于 SKILL.md）
+See `skills/skill-name/references/api.md`  # ❌（多余路径）
+一键获取完整项目代码
+markdown
+1
+2
+3
+问题 5：脚本无法执行
+症状：Claude 说找不到命令或权限不足
+
+解决方案：
+
+检查可执行权限
+# 添加执行权限
+chmod +x skills/skill-name/scripts/script.sh
+
+# 验证
+ls -la skills/skill-name/scripts/
+# 应有 rwxr-xr-x 权限
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+添加 shebang
+#!/bin/bash  # Bash 脚本
+#!/usr/bin/env python3  # Python 脚本
+#!/usr/bin/env node  # Node 脚本
+
+# 然后是你的代码
+echo "Hello World"
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+在 SKILL.md 中说明依赖
+## Requirements
+
+This skill requires:
+- Python 3.8+
+- Node.js 16+
+- `jq` command-line tool
+
+Run setup script:
+```bash
+./scripts/setup.sh
+一键获取完整项目代码
+markdown
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+---
+
+## 高级技巧
+
+### 技巧 1：Skill 组合使用
+
+**场景**：用户可能需要多个 Skill 一起工作
+
+**解决方案：**
+```yaml
+# Skill A: frontend-design
+description: This skill should be used when building frontend components...
+
+# Skill B: testing-guide
+description: This skill should be used when writing tests...
+
+# 当用户说："create a React component with tests"
+# 两个 Skill 都会触发！
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+协调多个 Skill：
+
+# SKILL.md
+
+## Integration with Other Skills
+
+When creating frontend components, also check `testing-guide` skill for test requirements.
+When designing APIs, also check `security-audit` skill for security validation.
+一键获取完整项目代码
+markdown
+1
+2
+3
+4
+5
+6
+技巧 2：动态内容生成
+场景：Skill 内容需要根据项目变化
+
+解决方案：
+
+#!/usr/bin/env python3
+"""Generate current API documentation."""
+
+# scripts/update-api-docs.py
+
+import os
+import json
+
+def generate_api_docs():
+    """Generate API documentation from code."""
+    # 读取代码注释
+    # 生成文档
+    # 写入 references/api-docs.md
+
+if __name__ == '__main__':
+    generate_api_docs()
+一键获取完整项目代码
+python
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+然后在 SKILL.md 中：
+
+## Updating Documentation
+
+Run to regenerate API docs:
+```bash
+python3 scripts/update-api-docs.py
+一键获取完整项目代码
+markdown
+1
+2
+3
+4
+5
+### 技巧 3：基于环境的 Skill
+
+**场景**：不同项目需要不同的 Skill
+
+**解决方案：**
+```bash
+# ~/.claude/settings.json (全局配置)
+{
+  "skillsEnabled": true,
+  "skillOverrides": {
+    "/path/to/project-a": ["skill-a", "skill-b"],
+    "/path/to/project-b": ["skill-c"]
+  }
+}
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+或者使用项目级Skill：
+
+project/
+├── .claude/
+│   ├── settings.json
+│   └── skills/  # 项目专用的 Skill
+│       └── project-specific-skill/
+│           └── SKILL.md
+└── src/
+一键获取完整项目代码
+1
+2
+3
+4
+5
+6
+7
+技巧 4：Skill 版本控制
+技巧：使用 Git 管理 Skill
+
+# 策略 1：Skill 独立仓库
+# 便于团队共享
+
+# 策略 2：Skill 在项目中
+# 针对项目定制
+
+# 策略 3：混合方案
+git submodule add https://github.com/team/skills-repo.git .claude/skills
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+7
+8
+提示：在 Skill 中添加版本信息：
+
+---
+name: api-development
+version: 1.2.0
+lastUpdated: 2025-01-15
+maintainers:
+  - alice@company.com
+  - bob@company.com
+---
+一键获取完整项目代码
+yaml
+1
+2
+3
+4
+5
+6
+7
+8
+技巧 5：Testing Skills
+自动化测试：
+
+#!/usr/bin/env python3
+"""Test skill triggers."""
+
+# scripts/test-skill-triggers.py
+
+test_cases = [
+    ("review this code", True),
+    ("check code quality", True),
+    ("what time is it", False),
+]
+
+def test_triggers():
+    """Test if Skill triggers correctly."""
+    # 模拟加载 Skill
+    # 测试触发逻辑
+    # 报告结果
+
+if __name__ == '__main__':
+    test_triggers()
+一键获取完整项目代码
+python
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+集成测试：
+
+#!/bin/bash
+# scripts/integration-test.sh
+
+echo "Testing: review this code"
+claude --non-interactive "review this code" > output.txt
+
+# 检查输出
+if grep -q "Code Review Guide" output.txt; then
+  echo "✅ Skill triggered"
+else
+  echo "❌ Skill did not trigger"
+fi
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+技巧 6：Skill 性能优化
+大 Skill 拆分：
+
+If SKILL.md is too large (>3000 words):
+
+skills/
+├── feature-dev/
+│   ├── SKILL.md  # 概述和基础
+│   ├── references/
+│   │   ├── architecture.md
+│   │   └── performance.md
+│   └── skills/  # 嵌套 Skill！
+│       ├── database-design/
+│       │   └── SKILL.md
+│       └── frontend-design/
+│           └── SKILL.md
+一键获取完整项目代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+懒加载策略：
+
+# SKILL.md
+
+For advanced topics, see nested skills:
+- `skills/feature-dev/skills/database-design/` - Database design patterns
+- `skills/feature-dev/skills/frontend-design/` - Frontend design guidelines
+一键获取完整项目代码
+markdown
+1
+2
+3
+4
+5
+技巧 7：Skill 文档生成
+自动生成资源索引：
+
+#!/usr/bin/env python3
+"""Generate Skill documentation index."""
+
+import os
+
+def generate_index():
+    """Generate reference index."""
+    # 扫描 references/
+    # 生成索引
+    # 写入 SKILL.md
+
+if __name__ == '__main__':
+    generate_index()
+一键获取完整项目代码
+python
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+模板系统：
+
+.template/
+├── SKILL.md.template
+├── scripts/
+│   └── generate-skill.py  # 从模板创建 Skill
+└── examples/
+    └── basic-structure/
+一键获取完整项目代码
+1
+2
+3
+4
+5
+6
+技巧 8：Skill 统计和分析
+使用分析：
+
+#!/bin/bash
+# 统计 Skill 使用情况
+echo "=== Skill Statistics ==="
+for skill in skills/*/; do
+  name=$(basename "$skill")
+  word_count=$(wc -w < "$skill/SKILL.md")
+  ref_count=$(find "$skill" -name "*.md" -path "*/references/*" | wc -l)
+  echo "$name: $word_count words, $ref_count references"
+done
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+7
+8
+9
+覆盖测试：
+
+# 确保所有 references 都被引用
+for ref in skills/*/references/*.md; do
+  skill=$(dirname $(dirname $ref))
+  if ! grep -q "references/$(basename $ref)" "$skill/SKILL.md"; then
+    echo "Warning: $(basename $ref) not referenced in SKILL.md"
+  fi
+done
+一键获取完整项目代码
+bash
+1
+2
+3
+4
+5
+6
+7
+快速参考
+Skill 创建步骤
+# 1. 规划
+# 2. 创建结构
+mkdir -p plugin-name/skills/skill-name/{references,examples,scripts}
+
+# 3. 写 SKILL.md
+cat > plugin-name/skills/skill-name/SKILL.md << 'EOF'
+---
+name: skill-name
+description: This skill should be used when...
+---
+
+# Skill Title
+
+Content here...
+EOF
+
+# 4. 添加资源（可选）
+echo "Details..." > references/details.md
+echo "Example..." > examples/example.js
+echo "#!/bin/bash" > scripts/helper.sh
+
+# 5. 测试
+claude --plugin-dir plugin-name/ "trigger phrase"
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+常用命令
+# 统计 Skill 信息
+wc -w skills/*/SKILL.md                    # 查看所有 Skill 字数
+find skills/*/references -name "*.md" | wc -l  # 统计参考资料数
+
+# 检查引用
+for skill in skills/*/SKILL.md; do
+  echo "=== $skill ==="
+  grep "references/" "$skill" | wc -l     # 引用数量
+  grep "examples/" "$skill" | wc -l       # 示例引用
+  grep "scripts/" "$skill" | wc -l        # 脚本引用
+done
+
+# 检查重复触发词
+grep -h "description:" skills/*/.claude/skill.json | sort | uniq -d
+一键获取完整项目代码
+bash
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+最佳实践清单
+创建或维护 Skill 时检查：
+
+ description 包含具体触发短语
+ 使用第三人称（“This skill should be used when…”）
+ SKILL.md 字数在 1,500-2,000 之间
+ 正文使用命令式风格（“Do X”, not “You should X”）
+ 配套资源放在正确目录
+ 明确引用 references/, examples/, scripts/
+ examples 可以完整运行
+ scripts 有执行权限和 shebang
+ 版本号已更新
+ CHANGELOG 已记录（如果需要）
+ 同事已测试
+ 命名符合规范（kebab-case）
+ README 已记录（团队使用）
+触发词参考
+常用触发词类别：
+
+动作词
+
+create, build, generate, make, develop, design
+add, implement, write, refactor, optimize
+check, review, analyze, test, validate
+名词
+
+具体技术：hook, component, API, test, query
+抽象概念：quality, structure, pattern, best practice
+场景短语
+
+“help me with X”
+“how to do X”
+“what’s the best way to X”
+“guide me through X”
+实战模板：
+
+description: This skill should be used when the user asks to
+             "create X", "build X", "generate X", "make X",
+             or "implement X",
+             or asks "how to create X", "what's the best way to X",
+             or works with X-related tasks.
+————————————————
+版权声明：本文为CSDN博主「言之。」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_44810930/article/details/156136592
