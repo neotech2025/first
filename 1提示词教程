@@ -1,7 +1,15 @@
 通用模式是：角色 + 目标 + 需求 + 额外信息
-  
+
+https://github.com/linshenkx/prompt-optimizer  一款提示词优化器，助力于编写高质量的提示词
+https://github.com/asgeirtj/system_prompts_leaks   ChatGPT、Claude 和 Gemini 中提取的系统提示集合
+https://github.com/anthropics/prompt-eng-interactive-tutorial     Anthropic 的交互式提示工程教程
+https://github.com/PlexPt/awesome-chatgpt-prompts-zh   About
+ChatGPT 中文调教指南。各种场景使用指南。学习怎么让它听你的话。
+https://github.com/f/awesome-chatgpt-prompts  分享、发现和收集社区中的提示。免费且开源 —— 可以为您的组织自托管，确保完全隐私。
+
 https://www.promptingguide.ai/zh/techniques/dsp
 
 https://github.com/PandaBearLab/prompt-tutorial
 
 https://github.com/dair-ai/Prompt-Engineering-Guide
+https://github.com/toon-format/toon  紧凑、可读、具有模式的 JSON 用于 LLM 提示。规范、基准、TypeScript SDK。
